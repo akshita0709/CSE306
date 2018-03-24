@@ -1,5 +1,5 @@
 #include<stdio.h>
-int i,n;
+int i,T=0;
 void swap(int *x,int *y)
 {
  int z;
@@ -8,38 +8,63 @@ void swap(int *x,int *y)
  *y=z;  
 }
 //***************************function to calculate waiting time***************
-void calcwt(int BT[],int WT[],int n)
+void calcwt(int AT[],int WT[],int n)
 {
-	WT[0]=0;
-	for(i=0;i<n-1;i++)
+	for(i=0;i<n;i++)
 	{
-		WT[i+1]=BT[i]+WT[i];
+		if (AT[i]>T)
+		{
+			WT[i]=-100;
+		}
+		else
+		WT[i]=T-AT[i];
 	}
 }
 //******************************************************************************
 //*************************function to calculate priority***********************
-void calcpriority(int BT[],int WT[],int pri[],int n)
+void calcpriority(int BT[],int WT[],float pri[],int n)
 {
 	for(i=0;i<n;i++)
 	{
-		pri[i]=(int)((WT[i]*10)/BT[i]);
+		pri[i]=(1+WT[i])/BT[i];
 	}	
 }
-//**********************function to remove executed process**********************
-void remoove(int ar[])
+int max(float pri[],int n)
 {
-	for(i=0;i<n;i++)
+	int p=pri[0],loc=0;
+	for(i=1;i<n;i++)
+	{
+		if(pri[i]>p)
+		{
+			loc=i;
+		}
+	}
+	return loc;
+	
+}
+//**********************function to remove executed process**********************
+void remoove(int ar[],int index,int n)
+{
+	for(i=index;i<n;i++)
+	{
+		ar[i]=ar[i+1];
+	}
+}
+void remoovep(float ar[],int index,int n)
+{
+	for(i=index;i<n;i++)
 	{
 		ar[i]=ar[i+1];
 	}
 }
 int main()
 {
-	int j,k;
+	int j,k,index,n;
 	//*************************TAKING INFORMATION ABOUT PROCESSES****************
 	printf("enter number of processes");
 	scanf("%d",&n);
-	int pno[n],BT[n],WT[n],pri[n];
+	int pno[n],BT[n],WT[n],AT[n];
+	float pri[n];
 	for(i=0;i<n;i++)
 	{
 		pno[i]=i+1;
@@ -49,6 +74,11 @@ int main()
 		printf("enter burst time for P%d ",i+1);
 		scanf("%d",&BT[i]);
 	}
+	for(i=0;i<n;i++)
+	{
+		printf("enter arrival time for P%d ",i+1);
+		scanf("%d",&AT[i]);
+	}
 	//*****************************************************************************
 	//***************SCHEDULING SHORTEST JOB NEXT**********************************	
 	for(i=0;i<n;i++)
@@ -56,36 +86,39 @@ int main()
         k=i;
         for(j=i+1;j<n;j++)
         {
-            if(BT[j]<BT[k])
+            if(AT[j]<AT[k])
                 k=j;
         } 
         swap(&pno[i],&pno[k]);
         swap(&BT[i],&BT[k]);
+	swap(&AT[i],&AT[k]);
     }
     for(i=0;i<n;i++)
 	{	
 	    printf("\nP %d bt %d",pno[i],BT[i]);		
 	}
-	calcwt(BT,WT,n);
-	for(i=0;i<n;i++)
+	T=AT[0];
+	for(i=1;i<n;i++)
 	{
-		printf("\nwt %d",WT[i]);		
+		if(AT[i]<T)
+		{
+			T=AT[i];
+		}
 	}
-	printf("\nEXECUTING P%d ......................",pno[0]);	
-	//*****************************************************************************
-	while(n>0)
+	int n1=n;
+	for(j=0;j<n;j++)
 	{
-	    remoove(pno);
-	    remoove(BT);
-	    remoove(WT);
-	    remoove(pri);
-	    n=n-1;
-	    calcpriority(BT,WT,pri,n);	/////////////////////////////////////////////////////////////
-	 for(i=0;i<n;i++)
-	{
-		printf("\nP%d priority=%d",pno[i],pri[i]);		
+		calcwt(AT,WT,n);
+	    calcpriority(BT,WT,pri,n);
+	    printf("\nP %d wt %d pri %f",pno[j],WT[j],pri[j]);	
+	    index=max(pri,n);
+    	printf("\nexecuting p%d ........",pno[index]);
+    	T=T+BT[index];
+	    remoove(pno,index,n);
+	    remoove(BT,index,n);
+	    remoove(WT,index,n);
+	    remoovep(pri,index,n);
+	    n=n-1;		
 	}
-	printf("\nEXECUTING P%d ......................",pno[0]);
-    }	
 	return 0;	
 }
