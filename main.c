@@ -1,5 +1,5 @@
 #include<stdio.h>
-int i,T=0;
+int i,T=0;'//work as time flag
 void swap(int *x,int *y)
 {
  int z;
@@ -14,13 +14,12 @@ void calcwt(int AT[],int WT[],int n)
 	{
 		if (AT[i]>T)
 		{
-			WT[i]=-100;
-		}
-		else
+			WT[i]=-101;//process who have not arrived yet but data is 
+		}                  //provided hence given negative priority so could not 
+		else               //get a chance to run utill reach the arrival time 
 		WT[i]=T-AT[i];
 	}
 }
-//******************************************************************************
 //*************************function to calculate priority***********************
 void calcpriority(int BT[],int WT[],float pri[],int n)
 {
@@ -31,11 +30,13 @@ void calcpriority(int BT[],int WT[],float pri[],int n)
 }
 int max(float pri[],int n)
 {
-	int p=pri[0],loc=0;
+	float p=pri[0];
+	int loc=0;
 	for(i=1;i<n;i++)
 	{
 		if(pri[i]>p)
 		{
+			p=pri[i];
 			loc=i;
 		}
 	}
@@ -50,7 +51,7 @@ void remoove(int ar[],int index,int n)
 		ar[i]=ar[i+1];
 	}
 }
-void remoovep(float ar[],int index,int n)
+void remoovep(float ar[],int index,int n)//for array of float type ie.priority
 {
 	for(i=index;i<n;i++)
 	{
@@ -80,23 +81,19 @@ int main()
 		scanf("%d",&AT[i]);
 	}
 	//*****************************************************************************
-	//***************SCHEDULING SHORTEST JOB NEXT**********************************	
+	//***************Sorting according to arrival time**********************************	
 	for(i=0;i<n;i++)
-    {
-        k=i;
-        for(j=i+1;j<n;j++)
-        {
-            if(AT[j]<AT[k])
+         {
+           k=i;
+           for(j=i+1;j<n;j++)
+            {
+              if(AT[j]<AT[k])
                 k=j;
-        } 
-        swap(&pno[i],&pno[k]);
-        swap(&BT[i],&BT[k]);
-	swap(&AT[i],&AT[k]);
-    }
-    for(i=0;i<n;i++)
-	{	
-	    printf("\nP %d bt %d",pno[i],BT[i]);		
-	}
+            } 
+           swap(&pno[i],&pno[k]);
+           swap(&BT[i],&BT[k]);
+	   swap(&AT[i],&AT[k]);
+         }
 	T=AT[0];
 	for(i=1;i<n;i++)
 	{
@@ -108,12 +105,11 @@ int main()
 	int n1=n;
 	for(j=0;j<n;j++)
 	{
-		calcwt(AT,WT,n);
-	    calcpriority(BT,WT,pri,n);
-	    printf("\nP %d wt %d pri %f",pno[j],WT[j],pri[j]);	
+	    calcwt(AT,WT,n);
+	    calcpriority(BT,WT,pri,n);	
 	    index=max(pri,n);
-    	printf("\nexecuting p%d ........",pno[index]);
-    	T=T+BT[index];
+    	    printf("\nexecuting p%d ........",pno[index]);
+    	    T=T+BT[index];
 	    remoove(pno,index,n);
 	    remoove(BT,index,n);
 	    remoove(WT,index,n);
