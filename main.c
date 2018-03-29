@@ -40,8 +40,7 @@ int max(float pri[],int n)
 			loc=i;
 		}
 	}
-	return loc;
-	
+	return loc;	
 }
 //**********************function to remove executed process**********************
 void remoove(int ar[],int index,int n)
@@ -102,6 +101,14 @@ int main()
 			T=AT[i];
 		}
 	}
+	if(T>0)
+	{
+		for(k=0;k<T;k++)
+    	{
+    		printf("\nTIME= %d",k);
+    		sleep(1);
+		}
+	}
 	int n1=n;
 	for(j=0;j<n;j++)
 	{
@@ -109,6 +116,12 @@ int main()
 	    calcpriority(BT,WT,pri,n);	
 	    index=max(pri,n);
     	    printf("\nexecuting p%d ........",pno[index]);
+	    for(k=T;k<T+BT[index];k++)
+    	       {
+    		printf("\nTIME= %d",k);
+    		sleep(1);
+		}
+	    printf("\nTIME= %d",T+BT[index]);
     	    T=T+BT[index];
 	    remoove(pno,index,n);
 	    remoove(BT,index,n);
