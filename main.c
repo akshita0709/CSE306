@@ -160,23 +160,24 @@ int main()
        printf("\n");
        for(l=0;l<n1+1;l++)
          {
+	     if(Time[l]>9)
+	      {
+		j=l;
+		break;
+	      }
     	    for(k=0;k<(Time[l]-Time[l-1]);k++)
     	      {
 		printf("  ");
 	      }
 	    printf("%d",Time[l]);
-	    if(Time[l]>9)
-	      {
-		j=l;
-		break;
-	      }
 	 }
-       for(l=j+1;l<n1+1;l++)
+       for(l=j;l<n1+1;l++)
          {
     	   for(k=0;k<(Time[l]-Time[l-1])-1;k++)
     	     {
 		printf("  ");
 	     }
+	   printf(" ");
 	   printf("%d",Time[l]);
 	}
        printf("\n");
