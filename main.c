@@ -1,5 +1,5 @@
 #include<stdio.h>
-int i,T=0;'//work as time flag
+int i,T=0;//work as time flag
 void swap(int *x,int *y)
 {
  int z;
@@ -59,11 +59,11 @@ void remoovep(float ar[],int index,int n)//for array of float type ie.priority
 }
 int main()
 {
-	int j,k,index,n;
+	int j,k,l,index,n;
 	//*************************TAKING INFORMATION ABOUT PROCESSES****************
 	printf("enter number of processes");
 	scanf("%d",&n);
-	int pno[n],BT[n],WT[n],AT[n];
+	int pno[n],BT[n],WT[n],AT[n],pro[n],Time[n];
 	float pri[n];
 	for(i=0;i<n;i++)
 	{
