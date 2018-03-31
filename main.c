@@ -103,25 +103,28 @@ int main()
 	}
 	if(T>0)
 	{
-		for(k=0;k<T;k++)
-    	{
+	   for(k=0;k<T;k++)
+    	    {
     		printf("\nTIME= %d",k);
     		sleep(1);
-		}
+	    }
 	}
 	int n1=n;
-	for(j=0;j<n;j++)
+	Time[0]=0;
+	for(j=0;j<n1;j++)
 	{
 	    calcwt(AT,WT,n);
 	    calcpriority(BT,WT,pri,n);	
 	    index=max(pri,n);
     	    printf("\nexecuting p%d ........",pno[index]);
+	    pro[j]=pno[index];
 	    for(k=T;k<T+BT[index];k++)
     	       {
     		printf("\nTIME= %d",k);
     		sleep(1);
 		}
 	    printf("\nTIME= %d",T+BT[index]);
+	    Time[j+1]=T+BT[index];
     	    T=T+BT[index];
 	    remoove(pno,index,n);
 	    remoove(BT,index,n);
@@ -129,5 +132,53 @@ int main()
 	    remoovep(pri,index,n);
 	    n=n-1;		
 	}
-	return 0;	
-}
+	printf("\n");
+        for(l=0;l<n1+1;l++)
+         {
+    	   for(k=0;k<(Time[l]-Time[l-1]);k++)
+    	    {printf("--");}
+    	   printf(" ");
+        }  
+	printf("\n");
+	printf("|");
+        for(l=1;l<n1+1;l++)
+          {
+    	    for(k=0;k<(Time[l]-Time[l-1])-1;k++)
+    	      {printf(" ");}
+    	    printf("P%d",pro[l-1]);
+    	    for(k=0;k<(Time[l]-Time[l-1])-1;k++)
+    	      {printf(" ");}
+    	    printf("|");
+          }
+        printf("\n");
+        for(l=0;l<n1+1;l++)
+          {
+    	    for(k=0;k<(Time[l]-Time[l-1]);k++)
+    	      {printf("--");}
+    	    printf(" ");
+          }
+       printf("\n");
+       for(l=0;l<n1+1;l++)
+         {
+    	    for(k=0;k<(Time[l]-Time[l-1]);k++)
+    	      {
+		printf("  ");
+	      }
+	    printf("%d",Time[l]);
+	    if(Time[l]>9)
+	      {
+		j=l;
+		break;
+	      }
+	 }
+       for(l=j+1;l<n1+1;l++)
+         {
+    	   for(k=0;k<(Time[l]-Time[l-1])-1;k++)
+    	     {
+		printf("  ");
+	     }
+	   printf("%d",Time[l]);
+	}
+       printf("\n");
+       return 0;	
+ }
